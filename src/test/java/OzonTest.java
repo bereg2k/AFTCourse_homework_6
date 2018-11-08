@@ -1,5 +1,5 @@
 import org.junit.Test;
-import steps.MainPageSteps;
+import pages.MainPage;
 
 /**
  * Реализовать следующий тестовый сценарий с применением подхода PageObject/PageFactory:
@@ -17,9 +17,7 @@ public class OzonTest extends BaseTest{
 
     @Test
     public void ozonTestMain(){
-        MainPageSteps mainPageSteps = new MainPageSteps();
-
-        mainPageSteps.stepOpenCart();
-
+        MainPage mainPage = new MainPage(driver);
+        mainPage.openCart();
     }
 }
