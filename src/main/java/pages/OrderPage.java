@@ -31,7 +31,7 @@ public class OrderPage extends BasePage {
     public void chooseBrand(String text) {
         if (showAllButtonForBrands.isDisplayed())
             click(showAllButtonForBrands);
-
+        fillElement("//div[@data-test-id='filter-block-brand']//input", text);
         click("//span[@class='checkmark']/following::span[contains(text(),'" + text + "')]");
     }
 
@@ -42,8 +42,9 @@ public class OrderPage extends BasePage {
     }
 
     public void inputPriceRange(String priceFrom) {
+        waitForVisible(priceRangeTextBoxFrom);
         fillElement(priceRangeTextBoxFrom, priceFrom);
-        click(showFilteredByPriceButton);
+        click(priceRangeTextBoxTo);
         click(showFilteredByPriceButton);
     }
 

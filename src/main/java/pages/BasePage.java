@@ -1,9 +1,6 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -45,7 +42,7 @@ abstract class BasePage {
     }
 
     void waitForClickable(WebElement element){
-        Wait<WebDriver> wait = new WebDriverWait(driver, 15);
+        Wait<WebDriver> wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
@@ -67,19 +64,19 @@ abstract class BasePage {
     }
 
     void click(String xpath) {
+        scroll(findByXpath(xpath));
         waitForVisible(By.xpath(xpath));
         findByXpath(xpath).click();
     }
 
     void click(WebElement element) {
-        scroll(element);
         waitForClickable(element);
         element.click();
     }
 
     void fillElement(WebElement element, String text) {
         click(element);
-        element.clear();
+        element.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
         if (element.getTagName().equalsIgnoreCase("select")) {
             selectByText(element, text);
         } else {

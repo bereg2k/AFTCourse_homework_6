@@ -29,7 +29,7 @@ public class MainPage extends BasePage {
 
     @Step("выбран пункт главного меню \"{0}\"")
     public void chooseMainMenuLink(String text) {
-        click(By.xpath("//div[@class='links']/a[contains(text(),'" + text + "')]"));
+        click(By.xpath("//div[contains(@class, 'bHeaderCategoryLinks')]/a[contains(text(),'" + text + "')]"));
     }
 
     @Step("Открыта Корзина")

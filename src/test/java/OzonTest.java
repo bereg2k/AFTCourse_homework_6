@@ -1,5 +1,9 @@
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import pages.CartPage;
 import pages.MainPage;
+import pages.OrderPage;
+import stepsDefs.Hooks;
 
 /**
  * Реализовать следующий тестовый сценарий с применением подхода PageObject/PageFactory:
@@ -18,6 +22,10 @@ public class OzonTest extends BaseTest{
     @Test
     public void ozonTestMain(){
         MainPage mainPage = new MainPage(driver);
-        mainPage.openCart();
+        OrderPage orderPage = new OrderPage(driver);
+        CartPage cartPage = new CartPage(driver);
+
+        mainPage.chooseMainMenuLink("Электроника");
+        orderPage.chooseOrderCategory("Телефоны");
     }
 }

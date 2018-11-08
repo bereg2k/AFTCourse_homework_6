@@ -4,6 +4,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import other.TestProperties;
 
@@ -20,6 +21,9 @@ public class Hooks {
 
     @Before
     public static void setUp() {
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--disable-notifications");
+
         switch (properties.getProperty("browser")){
             case "firefox":
                 System.setProperty("webdriver.gecko.driver", properties.getProperty("webdriver.gecko.driver"));
@@ -27,11 +31,11 @@ public class Hooks {
                 break;
             case "chrome":
                 System.setProperty("webdriver.chrome.driver", properties.getProperty("webdriver.chrome.driver"));
-                driver = new ChromeDriver();
+                driver = new ChromeDriver(chromeOptions);
                 break;
             default:
                 System.setProperty("webdriver.chrome.driver", properties.getProperty("webdriver.chrome.driver"));
-                driver = new ChromeDriver();
+                driver = new ChromeDriver(chromeOptions);
         }
 
         String baseUrl = properties.getProperty("url");
@@ -43,6 +47,6 @@ public class Hooks {
 
     @After
     public static void tearDown() {
-        driver.quit();
+        //driver.quit();
     }
 }
