@@ -8,6 +8,9 @@ public class OrderPage extends BasePage {
     @FindBy(xpath = "//div[@data-test-id='filter-block-brand']//../span[@class='show-text']")
     WebElement showAllButtonForBrands;
 
+    @FindBy(xpath = "//div[@data-test-id='filter-block-brand']//input")
+    WebElement searchBrandTextBox;
+
     @FindBy(xpath = "//button[@data-test-id='range-filter-show']")
     WebElement showFilteredByPriceButton;
 
@@ -17,8 +20,16 @@ public class OrderPage extends BasePage {
     @FindBy(xpath = "//input[@data-test-id='range-filter-to-input']")
     WebElement priceRangeTextBoxTo;
 
-    @FindBy(xpath = "//div[@data-v-346efd2e]")
-    WebElement foundItems;
+    @FindBy(xpath = "//div[@data-index='0']")
+    WebElement firstFoundItem;
+
+    @FindBy(xpath = "//div[@class='five-dots preloader']")
+    WebElement preloader;
+
+    private static String availabilityLabelFormat = "//div[@data-index='%d']/div[@class='tile-actions']/div[@class='availability']";
+    private static String addToCartButtonFormat = "//div[@data-index='%d']/div[@class='tile-actions']/div[@class='sale-block']//span[contains(text(),'корзину')]";
+    private static String itemNameLabelFormat = "//div[@data-index='%d']/div[@class='rollover-container']//a[@class='text-link name-link']";
+    private static String itemPriceLabelFormat = "//div[@data-index='%d']/div[@class='rollover-container']//span[@class='price-number']/span";
 
     public OrderPage(WebDriver driver) {
         super(driver);
@@ -31,8 +42,9 @@ public class OrderPage extends BasePage {
     public void chooseBrand(String text) {
         if (showAllButtonForBrands.isDisplayed())
             click(showAllButtonForBrands);
-        fillElement("//div[@data-test-id='filter-block-brand']//input", text);
+        fillElement(searchBrandTextBox, text);
         click("//span[@class='checkmark']/following::span[contains(text(),'" + text + "')]");
+        waitForVisible(preloader);
     }
 
     public void inputPriceRange(String priceFrom, String priceTo) {
@@ -43,26 +55,24 @@ public class OrderPage extends BasePage {
 
     public void inputPriceRange(String priceFrom) {
         waitForVisible(priceRangeTextBoxFrom);
+        scroll(priceRangeTextBoxFrom);
+        clearPriceRangeInputBox(priceRangeTextBoxFrom);
         fillElement(priceRangeTextBoxFrom, priceFrom);
         click(priceRangeTextBoxTo);
         click(showFilteredByPriceButton);
+        waitForVisible(preloader);
     }
 
-    public void addItemsToCart() {
-        int count = 2;
-        if (foundItems.isDisplayed()) {
-            for (int i = 0; i <= count - 1; i++) {
-                if (findByXpath
-                        ("//div[@data-index='" + String.valueOf(i) + "']/div[@class='tile-actions']/div[@class='availability']")
-                        .getText().contains("В наличии")) {
-                    click("//div[@data-index='" + String.valueOf(i) + "']/div[@class='tile-actions']/div[@class='sale-block']//span[contains(text(),'корзину')]");
-                    getLocker().saveItemPrice
-                            (findByXpath("//div[@data-index='" + String.valueOf(i) + "']/div[@class='rollover-container']//a[@class='text-link name-link']"),
-                                    findByXpath("//div[@data-index='" + String.valueOf(i) + "']/div[@class='rollover-container']//span[@class='price-number']/span")
-                            );
-                }
+    public void addItemsToCart(int count) {
+        waitForVisible(firstFoundItem);
+        for (int i = 0; i <= count - 1; i++) {
+            if (findByXpath
+                    (String.format(availabilityLabelFormat, i)).getText().contains("В наличии")) {
+                click(String.format(addToCartButtonFormat, i));
+                getLocker().saveItemPrice(findByXpath(String.format(itemNameLabelFormat, i)), findByXpath(String.format(itemPriceLabelFormat, i)));
+            } else {
+                i--;
             }
-
         }
     }
 }

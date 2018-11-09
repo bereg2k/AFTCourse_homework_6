@@ -1,9 +1,7 @@
 package pages;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
 public class MainPage extends BasePage {
@@ -23,8 +21,12 @@ public class MainPage extends BasePage {
     public MainPage(WebDriver driver) {
         super(driver);
 
-        if (locationDeliveryButton.isDisplayed())
-            click(locationDeliveryButton);
+        try {
+            if (locationDeliveryButton.isDisplayed())
+                click(locationDeliveryButton);
+        } catch (TimeoutException | NoSuchElementException e) {
+            System.out.println("По умолчанию город доставки - МОСКВА.");
+        }
     }
 
     @Step("выбран пункт главного меню \"{0}\"")

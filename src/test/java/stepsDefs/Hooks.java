@@ -40,7 +40,7 @@ public class Hooks {
 
         String baseUrl = properties.getProperty("url");
         System.out.println(baseUrl);
-        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         driver.get(baseUrl);
     }

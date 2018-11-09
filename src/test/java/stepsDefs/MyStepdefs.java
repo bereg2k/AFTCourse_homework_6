@@ -1,6 +1,5 @@
 package stepsDefs;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ru.И;
 import cucumber.api.java.ru.Когда;
 import cucumber.api.java.ru.Тогда;
@@ -35,9 +34,9 @@ public class MyStepdefs {
         orderPage.inputPriceRange(priceFrom);
     }
 
-    @И("^добавлен товар в Корзину$")
-    public void addItemsToCart() {
-        orderPage.addItemsToCart();
+    @И("^добавлены товары в Корзину - первые (\\d+) шт.$")
+    public void addItemsToCart(int i) {
+        orderPage.addItemsToCart(4);
     }
 
     @И("^открыта Корзина$")
@@ -61,8 +60,7 @@ public class MyStepdefs {
     }
 
     @Тогда("^проверить что корзина пуста$")
-    public void проверитьЧтоКорзинаПуста() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void isCartEmpty() {
+        cartPage.isCartEmpty();
     }
 }
