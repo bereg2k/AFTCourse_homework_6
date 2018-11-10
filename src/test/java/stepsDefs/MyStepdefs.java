@@ -24,6 +24,11 @@ public class MyStepdefs {
         orderPage.chooseOrderCategory(orderCategory);
     }
 
+    @И("^выбрана подкатегория \"([^\"]*)\"$")
+    public void chooseOrderSubCategory(String orderSubCategory) {
+        orderPage.chooseOrderCategory(orderSubCategory);
+    }
+
     @И("^выбран производитель \"([^\"]*)\"$")
     public void chooseBrand(String brandName) {
         orderPage.chooseBrand(brandName);
@@ -34,9 +39,14 @@ public class MyStepdefs {
         orderPage.inputPriceRange(priceFrom);
     }
 
+    @И("^заполнена цена ОТ \"([^\"]*)\" ДО \"([^\"]*)\"$")
+    public void inputPriceRangeFromTo(String priceFrom, String priceTo) {
+        orderPage.inputPriceRange(priceFrom, priceTo);
+    }
+
     @И("^добавлены товары в Корзину - первые (\\d+) шт.$")
     public void addItemsToCart(int i) {
-        orderPage.addItemsToCart(4);
+        orderPage.addItemsToCart(i);
     }
 
     @И("^открыта Корзина$")
@@ -63,4 +73,6 @@ public class MyStepdefs {
     public void isCartEmpty() {
         cartPage.isCartEmpty();
     }
+
+
 }

@@ -1,14 +1,15 @@
 package pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
+import static org.junit.Assert.fail;
+
 public class OrderPage extends BasePage {
-    @FindBy(xpath = "//div[@data-test-id='filter-block-brand']//../span[@class='show-text']")
+    @FindBy(xpath = "//div[@data-test-id='filter-block-brand']//span[@class='show-text' and contains(text(),'Посмотреть все')]")
     WebElement showAllButtonForBrands;
 
-    @FindBy(xpath = "//div[@data-test-id='filter-block-brand']//input")
+    @FindBy(xpath = "//div[@data-test-id='filter-block-brand']//input[@class='input']")
     WebElement searchBrandTextBox;
 
     @FindBy(xpath = "//button[@data-test-id='range-filter-show']")
@@ -40,17 +41,15 @@ public class OrderPage extends BasePage {
     }
 
     public void chooseBrand(String text) {
-        if (showAllButtonForBrands.isDisplayed())
-            click(showAllButtonForBrands);
-        fillElement(searchBrandTextBox, text);
-        click("//span[@class='checkmark']/following::span[contains(text(),'" + text + "')]");
+        try {
+            if (showAllButtonForBrands.isDisplayed()) {
+                click(showAllButtonForBrands);
+                fillElement(searchBrandTextBox, text);
+            }
+        } catch (NoSuchElementException | StaleElementReferenceException ignored) {
+        }
+        click("//div[@data-test-id='filter-block-brand']//span[@class='checkmark']/following-sibling::span[contains(text(),'" + text + "')]");
         waitForVisible(preloader);
-    }
-
-    public void inputPriceRange(String priceFrom, String priceTo) {
-        fillElement(priceRangeTextBoxFrom, priceFrom);
-        fillElement(priceRangeTextBoxTo, priceTo);
-        click(showFilteredByPriceButton);
     }
 
     public void inputPriceRange(String priceFrom) {
@@ -63,8 +62,25 @@ public class OrderPage extends BasePage {
         waitForVisible(preloader);
     }
 
+    public void inputPriceRange(String priceFrom, String priceTo) {
+        waitForVisible(priceRangeTextBoxFrom);
+        scroll(priceRangeTextBoxFrom);
+        clearPriceRangeInputBox(priceRangeTextBoxFrom);
+        fillElement(priceRangeTextBoxFrom, priceFrom);
+        clearPriceRangeInputBox(priceRangeTextBoxTo);
+        fillElement(priceRangeTextBoxTo, priceTo);
+        click(showFilteredByPriceButton);
+        waitForVisible(preloader);
+    }
+
     public void addItemsToCart(int count) {
         waitForVisible(firstFoundItem);
+        try {
+            findByXpath("//div[@data-index='" + (count - 1) + "']");
+        } catch (InvalidSelectorException ignored) {
+            fail("Найдено менее " + count + " товаров для добавления!");
+        }
+
         for (int i = 0; i <= count - 1; i++) {
             if (findByXpath
                     (String.format(availabilityLabelFormat, i)).getText().contains("В наличии")) {

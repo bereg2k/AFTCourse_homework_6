@@ -3,11 +3,10 @@ package pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import other.Debugger;
 import other.Locker;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -17,7 +16,13 @@ abstract class BasePage {
 
     private WebDriver driver;
     private static Locker locker = Locker.getInstance();
-    private static int timeout = 10;
+    private static int timeout = 5;
+
+    private static Debugger debugger = Debugger.getInstance();
+
+    public Debugger getDebugger() {
+        return debugger;
+    }
 
     Locker getLocker() {
         return locker;
@@ -34,13 +39,8 @@ abstract class BasePage {
 
     void waitForVisible(By locator) {
         try {
-            new FluentWait<>(driver)
-                    .withTimeout(5, SECONDS)
-                    .pollingEvery(1, SECONDS)
-                    .ignoring(NoSuchElementException.class)
+            new WebDriverWait(driver, timeout)
                     .until((ExpectedConditions.visibilityOfElementLocated(locator)));
-//            new WebDriverWait(driver, timeout)
-//                    .until((ExpectedConditions.visibilityOfElementLocated(locator)));
         } catch (TimeoutException e) {
             System.out.println("TOE caught! Locator = " + locator.toString());
         }
@@ -48,21 +48,20 @@ abstract class BasePage {
 
     void waitForVisible(WebElement element) {
         try {
-            new FluentWait<>(driver)
-                    .withTimeout(5, SECONDS)
-                    .pollingEvery(1, SECONDS)
-                    .ignoring(NoSuchElementException.class)
+            new WebDriverWait(driver, timeout)
                     .until(ExpectedConditions.visibilityOf(element));
-//            new WebDriverWait(driver, timeout)
-//                    .until(ExpectedConditions.visibilityOf(element));
-        } catch (TimeoutException e) {
+        } catch (TimeoutException ignored) {
             System.out.println("TOE caught! Locator = " + element.toString());
         }
     }
 
     void waitForClickable(WebElement element) {
-        new WebDriverWait(driver, timeout)
-                .until(ExpectedConditions.elementToBeClickable(element));
+        try {
+            new WebDriverWait(driver, timeout)
+                    .until(ExpectedConditions.elementToBeClickable(element));
+        } catch (TimeoutException ignored) {
+            System.out.println("TOE caught! Locator = " + element.toString());
+        }
     }
 
     void waitForInVisible(By locator) {
@@ -85,18 +84,21 @@ abstract class BasePage {
     void click(By locator) {
         waitForVisible(locator);
         waitForClickable(findByLocator(locator));
+        debugger.addSteps(driver.getCurrentUrl());
         findByLocator(locator).click();
     }
 
     void click(String xpath) {
         waitForVisible(By.xpath(xpath));
         waitForClickable(findByXpath(xpath));
+        debugger.addSteps(driver.getCurrentUrl());
         findByXpath(xpath).click();
     }
 
     void click(WebElement element) {
         waitForVisible(element);
         waitForClickable(element);
+        debugger.addSteps(driver.getCurrentUrl());
         element.click();
     }
 
@@ -109,10 +111,9 @@ abstract class BasePage {
     }
 
     void clearPriceRangeInputBox(WebElement element) {
-        click(element);
-        for (int i = 0; i < 10; i++) {
-            element.sendKeys(Keys.BACK_SPACE);
-            i++;
+        while (!element.getAttribute("value").equals("")) {
+            click(element);
+            element.sendKeys(Keys.CONTROL + "a", Keys.DELETE);
         }
     }
 

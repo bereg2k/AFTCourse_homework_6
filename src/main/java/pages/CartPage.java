@@ -47,12 +47,15 @@ public class CartPage extends BasePage {
     public void clearCart() {
         try {
             while (clearAllCartButton.isDisplayed()) {
+                waitForInVisible(By.xpath("//div[contains(@class, 'bCartPage BlockActions')]"));
                 click(clearAllCartButton);
                 waitForInVisible(By.xpath("//div[contains(@class, 'bCartPage BlockActions')]"));
                 click(closeRemovedItemListButton);
             }
         } catch (NoSuchElementException ignored) {
         }
+        getLocker().getUserOrderList().clear();
+        getDebugger().getStepsTaken().clear();
     }
 
     @Step("проверяем пуста ли Корзина")

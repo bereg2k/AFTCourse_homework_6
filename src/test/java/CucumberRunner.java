@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(features =
         {"src/test/resources"},
         glue = {"stepsDefs"},
-        tags = {"@phones"},
+        tags = {"@all"},
         plugin = {"ru.yandex.qatools.allure.cucumberjvm.AllureReporter"})
 
 /**
