@@ -8,8 +8,11 @@ import pages.CartPage;
 import pages.MainPage;
 import pages.OrderPage;
 
+/**
+ * Собрание аннотированных методов для связи между .feature файлом для Cucumber и методами классов PageObject
+ */
 public class MyStepdefs {
-    private WebDriver driver = Hooks.driver;
+    private WebDriver driver = Hooks.getDriver();
     private MainPage mainPage = new MainPage(driver);
     private OrderPage orderPage = new OrderPage(driver);
     private CartPage cartPage = new CartPage(driver);
@@ -73,6 +76,4 @@ public class MyStepdefs {
     public void isCartEmpty() {
         cartPage.isCartEmpty();
     }
-
-
 }

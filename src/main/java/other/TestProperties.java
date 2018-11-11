@@ -5,10 +5,19 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Вспомогательный класс для работы с файлом свойств "application.properties" (есть в корневом каталоге).
+ * В файле хранятся различные глобальные константы, типа используемого браузера или адреса главного ресурса.
+ * Сделан по шаблону singleton.
+ */
 public class TestProperties {
-    private final Properties properties = new Properties();
+    private final Properties properties = new Properties(); // экземпляр класса Properties
     private static TestProperties INSTANCE = null;
 
+    /**
+     * Конструктор TestProperties, в рамках которого происходит загрузка
+     * в экземляр класса Properties нужных свойств из файла "application.properties".
+     */
     private TestProperties() {
         try {
             properties.load(new FileInputStream(new File(
@@ -18,6 +27,10 @@ public class TestProperties {
         }
     }
 
+    /**
+     * Getter для инициализации класса TestProperties, либо вызова его уже готового экземпляра.
+     * @return экземпляр класса TestProperties
+     */
     public static TestProperties getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new TestProperties();
@@ -25,11 +38,11 @@ public class TestProperties {
         return INSTANCE;
     }
 
+    /**
+     * Getter для доступа к экземпляру класса Properties. Для итоговой работы с файлом свойств нам нужен именно он.
+     * @return экземпляр класса Properties
+     */
     public Properties getProperties() {
         return properties;
-    }
-
-    public Object get(String key){
-        return properties.get(key);
     }
 }

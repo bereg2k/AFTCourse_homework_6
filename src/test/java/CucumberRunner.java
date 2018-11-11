@@ -6,11 +6,11 @@ import org.junit.runner.RunWith;
 @CucumberOptions(features =
         {"src/test/resources"},
         glue = {"stepsDefs"},
-        tags = {"@all"},
+        tags = {"@all"},    //доступные тэги = @test1, @test2, @test3, @all, @fail
         plugin = {"ru.yandex.qatools.allure.cucumberjvm.AllureReporter"})
 
 /**
- * Created by student on 05.11.2018.
+ * Класс для запуска тестов с помощью Cucumber
  */
 public class CucumberRunner {
 
