@@ -144,11 +144,13 @@ public class OrderPage extends BasePage {
         // данная проверка покрывает 2 случая:
         // 1. нужно добавить 4 товара, но найдено только 3, хоть и все "В НАЛИЧИИ".
         // 2. нужно добавить 4 товара, найдено 5, но 2 из них с пометкой "НЕТ В НАЛИЧИИ".
-        int countAvailable = 0, j = 0;
+        int countAvailable = 0, countUnavailable = 0, j = 0;
         try {
             while (countAvailable != count) {
                 if (findByXpath(String.format(availabilityLabelFormat, j)).getText().contains("В наличии")) {
-                    countAvailable++;
+                    countAvailable++; //считаем количество доступных товаров, начиная с первого
+                } else {
+                    countUnavailable++; //считаем количество НЕдоступных товаров, начиная с первого
                 }
                 j++;
             }
@@ -158,7 +160,8 @@ public class OrderPage extends BasePage {
 
         // если найденных доступных товаров хватает, то проходимся по порядку и добавляем все доступные.
         // в DOM индексация найденных элементов начинается с 0, а не 1.
-        for (int i = 0; i <= count - 1; i++) {
+        // добавляем ещё количество товаров, которые не в наличии, чтобы пройтись от начала до нужного количества доступных.
+        for (int i = 0; i <= (count - 1 + countUnavailable); i++) {
             // если очередной товар в наличии, то добавляем его в Корзину по соответствующей кнопке
             if (findByXpath(String.format(availabilityLabelFormat, i)).getText().contains("В наличии")) {
                 click(String.format(addToCartButtonFormat, i));
@@ -167,10 +170,11 @@ public class OrderPage extends BasePage {
                 Locker.getInstance().saveItemPrice
                         (findByXpath(String.format(itemNameLabelFormat, i)),
                                 findByXpath(String.format(itemPriceLabelFormat, i)));
-            } else {
-                //если очередной товар отсутствует в магазине, то мы его пропускаем.
-                // при пропуске счётчик уменьшается, чтобы добавить именно указанное количество товаров, не меньше
-                i--;
+
+                // добавляем информацию о добавленном товаре в шаг для отчёта
+                additionalInformation("Добавлен товар: \"" +
+                        findByXpath(String.format(itemNameLabelFormat, i)).getText() + "\"\n" +
+                        "по цене = " + findByXpath(String.format(itemPriceLabelFormat, i)).getText() + "руб.");
             }
         }
     }

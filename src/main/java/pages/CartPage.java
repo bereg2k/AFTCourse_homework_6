@@ -27,6 +27,10 @@ public class CartPage extends BasePage {
     @FindBy(xpath = "//div[contains(@class,'bIconButton mRemove mGray jsRemoveAll')]")
     WebElement clearAllCartButton;
 
+    // общая сумма товаров в Корзине
+    @FindBy(xpath = "//div[contains(@class,'eCartTotal_summPrice')]")
+    WebElement totalSumLabel;
+
     public CartPage(WebDriver driver) {
         super(driver);
     }
@@ -36,6 +40,8 @@ public class CartPage extends BasePage {
      * Используем хранилище Locker для сверки значений наименований товара и их цены.
      */
     public void checkItemsInCart() {
+        waitForInVisible(By.xpath("//div[contains(@class, 'bCartPage BlockActions')]"));
+
         for (Object o : Locker.getInstance().getUserOrderList().entrySet()) {
             Map.Entry pair = (Map.Entry) o;
             assertEquals(pair.getKey().toString(), findByXpath("//span[contains(text(),'" + pair.getKey() + "')]").getText());
@@ -53,8 +59,7 @@ public class CartPage extends BasePage {
 
         // отображение итоговой суммы в Корзине идёт вместе с валютой. Отрезаем все лишнее с помощью replaceAll.
         assertEquals("Общая сумма товаров в Корзине не соответствует сумме добавленных в неё товаров!",
-                (findByXpath("//div[contains(@class,'eCartTotal_summPrice')]").getText().replaceAll("\\s+|[а-яА-я]|\\.", "")),
-                String.valueOf(totalSum));
+                (totalSumLabel.getText().replaceAll("\\s+|[а-яА-я]|\\.", "")), String.valueOf(totalSum));
     }
 
     /**
@@ -80,5 +85,6 @@ public class CartPage extends BasePage {
      */
     public void isCartEmpty() {
         checkElementText(findByXpath("//span[contains(@class,'jsInnerContentpage_title')]"), "Корзина пуста");
+        takeScreenshot(); // снимаем скриншот результата для отчёта
     }
 }

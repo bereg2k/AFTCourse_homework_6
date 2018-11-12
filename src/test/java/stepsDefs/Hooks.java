@@ -55,7 +55,7 @@ public class Hooks {
         }
 
         String baseUrl = properties.getProperty("url"); // запрос значения параметра url из файла свойств application.properties
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); //установка обшего явного ожидания для всех объектов
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS); //установка обшего явного ожидания для всех объектов
         driver.manage().window().maximize(); // открываем окно на весь экран
         driver.get(baseUrl); // переходим по основной ссылке из файла свойств
     }

@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.qatools.allure.annotations.Attachment;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,6 +16,22 @@ abstract class BasePage {
     private WebDriver driver;
 
     private static int timeout = 5; // общая переменная для установки таймаутов
+
+    /**
+     * Метод добавления в шаг отчёта дополнительной текстовой информации.
+     */
+    @Attachment(value = "см. доп. информацию по шагу")
+    String additionalInformation(String text) {
+        return text;
+    }
+
+    /**
+     * Метод добавления в шаг отчёта скриншотов.
+     */
+    @Attachment(value = "см. скриншот")
+    byte[] takeScreenshot() {
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+    }
 
     BasePage(WebDriver driver) {
         this.driver = driver;
