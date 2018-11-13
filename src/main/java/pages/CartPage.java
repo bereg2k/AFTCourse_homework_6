@@ -46,6 +46,10 @@ public class CartPage extends BasePage {
             Map.Entry pair = (Map.Entry) o;
             assertEquals(pair.getKey().toString(), findByXpath("//span[contains(text(),'" + pair.getKey() + "')]").getText());
         }
+
+        // снимаем скриншот результата для отчёта
+        takeScreenshot();
+        //takeScreenshot(findByXpath("//div[@class='jsViewCollection jsChild_DOM_cart']"));
     }
 
     /**
@@ -85,6 +89,7 @@ public class CartPage extends BasePage {
      */
     public void isCartEmpty() {
         checkElementText(findByXpath("//span[contains(@class,'jsInnerContentpage_title')]"), "Корзина пуста");
-        takeScreenshot(); // снимаем скриншот результата для отчёта
+        takeScreenshot();
+        //takeScreenshot(findByXpath("//span[contains(@class,'jsInnerContentpage_title')]")); // снимаем скриншот результата для отчёта
     }
 }
