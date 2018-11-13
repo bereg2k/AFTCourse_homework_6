@@ -23,6 +23,7 @@ abstract class BasePage {
     private WebDriver driver;
 
     private static int timeout = 5; // общая переменная для установки таймаутов
+    private static final boolean isScreenshotsAllowed = true; // флаг включения снятия промежуточных скриншотов
 
     BasePage(WebDriver driver) {
         this.driver = driver;
@@ -220,16 +221,19 @@ abstract class BasePage {
      */
     @Attachment(value = "см. скриншот")
     byte[] takeScreenshot() {
-        try {
-            BufferedImage screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(100)).takeScreenshot(driver).getImage();
-            ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
-            ImageIO.write(screenshot, "png", imageStream);
-            imageStream.flush();
-            byte[] imageInByte = imageStream.toByteArray();
-            imageStream.close();
-            return imageInByte;
-        } catch (IOException ignored) {
-            return null;
-        }
+        if (isScreenshotsAllowed) {
+            try {
+                BufferedImage screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(500)).takeScreenshot(driver).getImage();
+                ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
+                ImageIO.write(screenshot, "png", imageStream);
+                imageStream.flush();
+                byte[] imageInByte = imageStream.toByteArray();
+                imageStream.close();
+                return imageInByte;
+            } catch (IOException ignored) {
+                return null;
+            }
+        } else
+            return "Screenshots are turned off! Refer to global variable 'isScreenshotAllowed' in BasePage.class".getBytes();
     }
 }

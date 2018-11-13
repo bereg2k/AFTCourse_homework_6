@@ -174,7 +174,7 @@ public class OrderPage extends BasePage {
                 // добавляем информацию о добавленном товаре в шаг для отчёта
                 additionalInformation("Добавлен товар: \"" +
                         findByXpath(String.format(itemNameLabelFormat, i)).getText() + "\"\n" +
-                        "по цене = " + findByXpath(String.format(itemPriceLabelFormat, i)).getText() + "руб.");
+                        "по цене = " + findByXpath(String.format(itemPriceLabelFormat, i)).getText() + " руб.");
             }
         }
     }

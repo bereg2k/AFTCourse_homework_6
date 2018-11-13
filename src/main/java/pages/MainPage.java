@@ -9,7 +9,7 @@ import org.openqa.selenium.support.FindBy;
 public class MainPage extends BasePage {
 
     // ссылка на значок Корзины вверху страницы
-    @FindBy(xpath = "//span[@class='eMyOzon_Item_Bottom' and contains(text(),'Корзина')]")
+    @FindBy(xpath = "//span[@class='link-bottom' and contains(text(),'Корзина')]")
     WebElement openCartButton;
 
     // ссылка на кнопку закрытия всплываюшего окна определения региона пользователя
