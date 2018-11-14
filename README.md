@@ -66,11 +66,11 @@ public void inputPriceRange(String priceFrom) {
 
 После проверки Корзины добавляем большой скриншот **её содержимого.**
 
-![image](/doc/img/failed_attach.png)
+![image](/doc/img/cart_attach.png)
 
 После очистки Корзины ещё один скриншот **подтверждает, что она пуста.**
 
-![image](/doc/img/cart_attach.png)
+![image](/doc/img/empty_cart_attach.png)
 
 *   Предварительные скриншоты можно **отключить** изменением переменной _isScreenshotAllowed_ в классе **BasePage.class**.
 Добавил флаг на всякий случай. Если вдруг захочется облегчить отчёт или убрать warnings метода снятия скринов.
