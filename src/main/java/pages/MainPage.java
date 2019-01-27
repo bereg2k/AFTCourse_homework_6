@@ -9,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 public class MainPage extends BasePage {
 
     // ссылка на значок Корзины вверху страницы
-    //@FindBy(xpath = "//div[@class ='user-menu']//span[contains(text(),'Корзина')]")
     @FindBy(xpath = "//div[@class ='user-menu']/div[@data-test-id='header-cart']")
     WebElement openCartButton;
 

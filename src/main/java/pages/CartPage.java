@@ -50,7 +50,6 @@ public class CartPage extends BasePage {
 
         // снимаем скриншот результата для отчёта
         takeScreenshot();
-        //takeScreenshot(findByXpath("//div[@class='jsViewCollection jsChild_DOM_cart']"));
     }
 
     /**
