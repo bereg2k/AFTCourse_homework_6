@@ -9,7 +9,8 @@ import org.openqa.selenium.support.FindBy;
 public class MainPage extends BasePage {
 
     // ссылка на значок Корзины вверху страницы
-    @FindBy(xpath = "//span[@class='eMyOzon_Item_Bottom' and contains(text(),'Корзина')]")
+    //@FindBy(xpath = "//div[@class ='user-menu']//span[contains(text(),'Корзина')]")
+    @FindBy(xpath = "//div[@class ='user-menu']/div[@data-test-id='header-cart']")
     WebElement openCartButton;
 
     // ссылка на кнопку закрытия всплываюшего окна определения региона пользователя
@@ -37,7 +38,7 @@ public class MainPage extends BasePage {
      * @param text название пункта меню
      */
     public void chooseMainMenuLink(String text) {
-        click(By.xpath("//div[contains(@class, 'bHeaderCategoryLinks')]/a[contains(text(),'" + text + "')]"));
+        click(By.xpath("//div[contains(@class, 'main-menu')]//a[contains(text(),'" + text + "')]"));
     }
 
     /**

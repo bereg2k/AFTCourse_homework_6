@@ -24,11 +24,12 @@ public class CartPage extends BasePage {
     WebElement closeRemovedItemListButton;
 
     // кнопка "Удалить все"
-    @FindBy(xpath = "//div[contains(@class,'bIconButton mRemove mGray jsRemoveAll')]")
+    @FindBy(xpath = "//div[@class='cart-list']//button[contains(text(),'Удалить')]")
     WebElement clearAllCartButton;
 
     // общая сумма товаров в Корзине
-    @FindBy(xpath = "//div[contains(@class,'eCartTotal_summPrice')]")
+    // Примечание: в XPATH вместо 'Итого' можно подставить 'Скидка' или 'Товары'
+    @FindBy(xpath = "//div[@data-test-id='cart-total']//div[contains(text(), 'Итого')]/..//span[contains(@class,'price-number')]")
     WebElement totalSumLabel;
 
     public CartPage(WebDriver driver) {
@@ -44,7 +45,7 @@ public class CartPage extends BasePage {
 
         for (Object o : Locker.getInstance().getUserOrderList().entrySet()) {
             Map.Entry pair = (Map.Entry) o;
-            assertEquals(pair.getKey().toString(), findByXpath("//span[contains(text(),'" + pair.getKey() + "')]").getText());
+            assertEquals(pair.getKey().toString(), findByXpath("//div[@class='cart']//div[@data-test-id='cart-split-item']//div[@class='desc']/a[contains(text(),'" + pair.getKey() + "')]").getText());
         }
 
         // снимаем скриншот результата для отчёта
@@ -88,8 +89,7 @@ public class CartPage extends BasePage {
      * Проверка Корзины на пустоту. Ищем надпись "Корзина пуста".
      */
     public void isCartEmpty() {
-        checkElementText(findByXpath("//span[contains(@class,'jsInnerContentpage_title')]"), "Корзина пуста");
-        takeScreenshot();
-        //takeScreenshot(findByXpath("//span[contains(@class,'jsInnerContentpage_title')]")); // снимаем скриншот результата для отчёта
+        checkElementText(findByXpath("//div[@class='cart']//h1[@class='cart-title']"), "Корзина пуста");
+        takeScreenshot(); // снимаем скриншот результата для отчёта
     }
 }

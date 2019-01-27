@@ -221,7 +221,7 @@ abstract class BasePage {
     @Attachment(value = "см. скриншот")
     byte[] takeScreenshot() {
         try {
-            BufferedImage screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(100)).takeScreenshot(driver).getImage();
+            BufferedImage screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(500)).takeScreenshot(driver).getImage();
             ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
             ImageIO.write(screenshot, "png", imageStream);
             imageStream.flush();

@@ -107,7 +107,7 @@ public class OrderPage extends BasePage {
         clearPriceRangeInputBox(priceRangeTextBoxFrom);
         fillElement(priceRangeTextBoxFrom, priceFrom);
         click(priceRangeTextBoxTo);
-        click(showFilteredByPriceButton);
+        //click(showFilteredByPriceButton);
         waitForInVisible(preloader);
     }
 
@@ -126,7 +126,7 @@ public class OrderPage extends BasePage {
         fillElement(priceRangeTextBoxFrom, priceFrom);
         clearPriceRangeInputBox(priceRangeTextBoxTo);
         fillElement(priceRangeTextBoxTo, priceTo);
-        click(showFilteredByPriceButton);
+        //click(showFilteredByPriceButton);
         waitForInVisible(preloader);
     }
 
