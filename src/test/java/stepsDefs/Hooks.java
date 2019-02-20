@@ -76,6 +76,6 @@ public class Hooks {
             }
         }
         locker.getUserOrderList().clear(); // очищаем хранилище
-        //driver.quit(); // закрываем браузер
+        driver.quit(); // закрываем браузер
     }
 }
