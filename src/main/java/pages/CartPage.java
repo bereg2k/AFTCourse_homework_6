@@ -29,7 +29,7 @@ public class CartPage extends BasePage {
 
     // общая сумма товаров в Корзине
     // Примечание: в XPATH вместо 'Итого' можно подставить 'Скидка' или 'Товары'
-    @FindBy(xpath = "//div[@data-test-id='cart-total']//div[contains(text(), 'Итого')]/..//span[contains(@class,'price-number')]")
+    @FindBy(xpath = "//div[@data-test-id='cart-total']//div[contains(text(), 'Итого')]/../..//span[contains(@class,'price-number')]")
     WebElement totalSumLabel;
 
     public CartPage(WebDriver driver) {

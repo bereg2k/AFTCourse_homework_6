@@ -41,6 +41,16 @@ abstract class BasePage {
     }
 
     /**
+     * Метод прокрутки страницы для подхода к нужным элементам.
+     * Реализован через JavascriptExecutor.
+     *
+     * @param xPath xPath элемента, к которому делается прокрутка.
+     */
+    void scroll(String xPath) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", findByXpath(xPath));
+    }
+
+    /**
      * Ожидание видимости элемента на странице.
      * Обработка исключения по таймауту нужна в виду особенностей динамического обновления страниц Озона.
      *
@@ -152,6 +162,7 @@ abstract class BasePage {
      * @param xpath строка с xpath элемента, на который кликаем
      */
     void click(String xpath) {
+        scroll(xpath);
         waitForVisible(By.xpath(xpath));
         waitForClickable(findByXpath(xpath));
         findByXpath(xpath).click();

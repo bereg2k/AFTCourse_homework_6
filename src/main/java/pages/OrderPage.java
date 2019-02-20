@@ -124,8 +124,11 @@ public class OrderPage extends BasePage {
         scroll(priceRangeTextBoxFrom);
         clearPriceRangeInputBox(priceRangeTextBoxFrom);
         fillElement(priceRangeTextBoxFrom, priceFrom);
+        click("//label[contains(text(),'от')]");
+        waitForInVisible(preloader);
         clearPriceRangeInputBox(priceRangeTextBoxTo);
         fillElement(priceRangeTextBoxTo, priceTo);
+        click("//label[contains(text(),'до')]");
         //click(showFilteredByPriceButton);
         waitForInVisible(preloader);
     }
